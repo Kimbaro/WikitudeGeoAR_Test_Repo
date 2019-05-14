@@ -85,10 +85,22 @@ var World = {
 //            }
 //            World.currentMarker.setDeselected(World.currentMarker);
 //        }
-
         /* Show panel. */
         $("#panel-poidetail").panel("open", 123);
         $(".ui-panel-dismiss").unbind("mousedown");
+
+        if (undefined === marker.distanceToUser) {
+            marker.distanceToUser = marker.markerObject.locations[0].distanceToUser();
+        }
+
+        /*
+            Distance and altitude are measured in meters by the SDK. You may convert them to miles / feet if
+            required.
+        */
+        var distanceToUserValue = (marker.distanceToUser > 999) ?
+            ((marker.distanceToUser / 1000).toFixed(2) + " km") :
+            (Math.round(marker.distanceToUser) + " m");
+        $("#poi-detail-distance").html(distanceToUserValue);
 
         /* Update panel values. */
         $("#poi-detail-title").html(marker.poiData.title);
@@ -129,11 +141,34 @@ var World = {
             For demo purpose they are relocated randomly around the user using a 'Helper'-function.
             Comment out previous 2 lines and use the following line > instead < to use static values 1:1.
         */
-         World.loadPoisFromJsonData(myJsonData);
+        World.loadPoisFromJsonData(myJsonData);
     },
+    /* Returns distance in meters of placemark with maxdistance * 1.1. */
+    getMaxDistance: function getMaxDistanceFn() {
 
+        /* Sort places by distance so the first entry is the one with the maximum distance. */
+        World.markerList.sort(World.sortByDistanceSortingDescending);
+
+        /* Use distanceToUser to get max-distance. */
+        var maxDistanceMeters = World.markerList[0].distanceToUser;
+
+        /*
+            Return maximum distance times some factor >1.0 so ther is some room left and small movements of user
+            don't cause places far away to disappear.
+         */
+        return maxDistanceMeters * 1.1;
+    },
     onError: function onErrorFn(error) {
         alert(error);
+    },
+    /* Helper to sort places by distance. */
+    sortByDistanceSorting: function sortByDistanceSortingFn(a, b) {
+        return a.distanceToUser - b.distanceToUser;
+    },
+
+    /* Helper to sort places by distance, descending. */
+    sortByDistanceSortingDescending: function sortByDistanceSortingDescendingFn(a, b) {
+        return b.distanceToUser - a.distanceToUser;
     }
 };
 
