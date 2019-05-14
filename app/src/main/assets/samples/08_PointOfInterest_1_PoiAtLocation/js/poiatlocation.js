@@ -64,22 +64,24 @@ var World = {
     //자신의 위치를 1초마다 갱신한 locationChanged함수를 호출하며 자바스크립트 상에서 해당 함수 호출 후 갱신된
     //자신의 위치를 기준으로 랜덤하게 마커 생성
     locationChanged: function locationChangedFn(lat, lon, alt, acc) {
-        alert("javascript call method : "+lon+"||"+lat+"||"+alt);
+//        alert("javascript call method : "+lon+"||"+lat+"||"+alt);
         /*
             The custom function World.onLocationChanged checks with the flag World.initiallyLoadedData if the
             function was already called. With the first call of World.onLocationChanged an object that contains geo
             information will be created which will be later used to create a marker using the
             World.loadPoisFromJsonData function.
         */
+
         if (!World.initiallyLoadedData) {
             /* Creates a poi object with a random location near the user's location. */
             var poiData = {
                 "id": 1,
-                "longitude": (lon + (Math.random() / 5 - 0.1)),
-                "latitude": (lat + (Math.random() / 5 - 0.1)),
-                "altitude": 100.0
+                "longitude": 127.457988,
+                "latitude": 36.335269,
+                "altitude": 100.0,
+                "title": "대전대학교융과과",
             };
-
+            alert(poiData.longitude+"||"+poiData.latitude);
             World.loadPoisFromJsonData(poiData);
             World.initiallyLoadedData = true;
         }

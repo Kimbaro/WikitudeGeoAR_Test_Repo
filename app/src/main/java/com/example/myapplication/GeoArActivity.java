@@ -78,14 +78,13 @@ public class GeoArActivity extends AppCompatActivity implements LocationListener
     @Override
     public void onLocationChanged(Location location) {
         if (location != null && architectView != null) {
-
             // check if location has altitude at certain accuracy level & call right architect method (the one with altitude information)
             if (location.hasAltitude() && location.hasAccuracy() && location.getAccuracy() < 7) {
                 architectView.setLocation(location.getLatitude(), location.getLongitude(), location.getAltitude(), location.getAccuracy());
             } else {
                 architectView.setLocation(location.getLatitude(), location.getLongitude(), location.hasAccuracy() ? location.getAccuracy() : 1000);
             }
-            Toast.makeText(getApplicationContext(), location.getLatitude() + "||" + location.getLongitude() + "||" + location.getAltitude(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getApplicationContext(), location.getLatitude() + "||" + location.getLongitude() + "||" + location.getAltitude(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -120,7 +119,7 @@ public class GeoArActivity extends AppCompatActivity implements LocationListener
         super.onPostCreate(savedInstanceState);
         architectView.onPostCreate();
         try {
-            architectView.load("samples/08_PointOfInterest_1_PoiAtLocation/index.html");
+            architectView.load("09_ObtainPoiData_2_FromLocalResource/index.html");
             Toast.makeText(getApplicationContext(), "index 실행", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             Toast.makeText(getApplicationContext(), "error!!", Toast.LENGTH_SHORT).show();
