@@ -20,7 +20,7 @@ function Marker(poiData) {
     var markerLocation = new AR.GeoLocation(poiData.latitude, poiData.longitude, poiData.altitude);
 
     /* Create an AR.ImageDrawable for the marker in idle state. */
-    this.markerDrawableIdle = new AR.ImageDrawable(World.markerDrawableIdle,8, {
+    this.markerDrawableIdle = new AR.ImageDrawable(World.markerDrawableIdle,4, {
         zOrder: 0,
         opacity: 1.0,
         rotate: {z: 180},
@@ -53,7 +53,10 @@ function Marker(poiData) {
         }
     });
 
-    this.descriptionLabel = new AR.Label(poiData.description.trunc(15), 1, {
+
+ var distance = (markerLocation.distanceToUser() > 999) ? ((markerLocation.distanceToUser() / 1000).toFixed(2) + " km") : (Math.round(markerLocation.distanceToUser()) + " m");
+// poiData.description.trunc(15) or distance
+    this.descriptionLabel = new AR.Label(distance, 1, {
         zOrder: 1,
         translate: {
             y: -3.5

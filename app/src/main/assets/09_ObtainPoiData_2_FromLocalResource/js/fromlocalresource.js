@@ -20,6 +20,11 @@ var World = {
     /* Called to inject new POI data. */
     loadPoisFromJsonData: function loadPoisFromJsonDataFn(poiData) {
 
+        /* Show radar & set click-listener. */
+        PoiRadar.show();
+        $('#radarContainer').unbind('click');
+        $("#radarContainer").click(PoiRadar.clickedRadar);
+
         /* Empty list of visible markers. */
         World.markerList = [];
 
@@ -35,6 +40,7 @@ var World = {
         });
 
         /* Loop through POI-information and create an AR.GeoObject (=Marker) per POI. */
+        //myjsondata.js 데이터 파싱
         for (var currentPlaceNr = 0; currentPlaceNr < poiData.length; currentPlaceNr++) {
             var singlePoi = {
                 "id": poiData[currentPlaceNr].id,
@@ -42,10 +48,9 @@ var World = {
                 "longitude": parseFloat(poiData[currentPlaceNr].longitude),
                 "altitude": parseFloat(poiData[currentPlaceNr].altitude),
                 "title": poiData[currentPlaceNr].name,
-                "description": poiData[currentPlaceNr].description
+                "description": poiData[currentPlaceNr].description,
+                "url": poiData[currentPlaceNr].url
             };
-
-
             World.markerList.push(new Marker(singlePoi));
         }
 
@@ -74,7 +79,6 @@ var World = {
             World.initiallyLoadedData = true;
         }
     },
-
     /* Fired when user pressed maker in cam. */
     onMarkerSelected: function onMarkerSelectedFn(marker) {
         World.currentMarker = marker;
@@ -87,7 +91,15 @@ var World = {
 //        }
         /* Show panel. */
         $("#panel-poidetail").panel("open", 123);
-        $(".ui-panel-dismiss").unbind("mousedown");
+        // $(".ui-panel-dismiss").unbind("mousedown");
+
+        // $("#myPopup").popup("open");
+
+        // $("#btnpopup").on("click", function(){
+        //     $("#p").popup("open");
+        //     setTimeout(function(){  $("#p").popup("close"); }, 5000);
+        // });
+
 
         if (undefined === marker.distanceToUser) {
             marker.distanceToUser = marker.markerObject.locations[0].distanceToUser();
@@ -97,12 +109,14 @@ var World = {
             Distance and altitude are measured in meters by the SDK. You may convert them to miles / feet if
             required.
         */
+
+        //마커 맵핑
         var distanceToUserValue = (marker.distanceToUser > 999) ?
             ((marker.distanceToUser / 1000).toFixed(2) + " km") :
             (Math.round(marker.distanceToUser) + " m");
         $("#poi-detail-distance").html(distanceToUserValue);
 
-        /* Update panel values. */
+        /* index.html에 파라미터 전달 */
         $("#poi-detail-title").html(marker.poiData.title);
         $("#poi-detail-description").html(marker.poiData.description);
 
@@ -113,14 +127,21 @@ var World = {
         /* Highlight current one. */
         marker.setSelected(marker);
     },// user clicked "More" button in POI-detail panel -> fire event to open native screen
+
+    //singlePoI 데이터 맵핑
     onPoiDetailMoreButtonClicked: function onPoiDetailMoreButtonClickedFn() {
-        var currentMarker = World.currentMarker;
         var markerSelectedJSON = {
             name: "markerselected",
-            id: currentMarker.poiData.id,
-            title: currentMarker.poiData.title,
-            description: currentMarker.poiData.description
+            id: World.currentMarker.poiData.id,
+            title: World.currentMarker.poiData.title,
+            description: World.currentMarker.poiData.description,
+            url: World.currentMarker.poiData.url
         };
+
+          $("#get_html_source").html(markerSelectedJSON.url);
+          $("#myPopup").popup("open");
+
+
         AR.platform.sendJSONObject(markerSelectedJSON);
     },
 

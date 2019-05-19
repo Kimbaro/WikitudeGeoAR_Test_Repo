@@ -1,11 +1,13 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 
     <!--  basic meta information -->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="Content-Type" content="application/json; charset=utf-8">
-    <meta content="width=device-width,initial-scale=1,maximum-scale=5,user-scalable=yes" name="viewport">
+    <meta content="width=device-width,initial-scale=1,maximum-scale=5,user-scalable=yes"
+          name="viewport">
 
     <title>My ARchitect World</title>
 
@@ -30,52 +32,100 @@
 
     <!-- World logic-->
     <script type="text/javascript" src="js/fromlocalresource.js"></script>
+
+    <!-- positioning of poi-radar -->
+    <link rel="stylesheet" href="css/poi-radar.css"/>
+
+    <!-- radar component -->
+    <script type="text/javascript" src="js/radar.js"></script>
+    <style type="text/css">
+        #panel-poidetail {
+            padding: 10px;
+            font-weight: bold;
+            text-align: center;
+            background-color: #ffffff;
+            opacity: 0.5;
+            width: 50%;
+        }
+
+        #panel-header {
+            background: none;
+            border: 0px;
+        }
+
+
+    </style>
 </head>
 
 <body>
 <div data-role="page" id="page1" style="background: none;">
     <!-- MAIN PAGE CONTENT -->
+    <!--
+      The position of the radar and its size are defined using a DOM element.
+      Wikitude SDK radar will be drawn into this div.
+  -->
+    <div class="radarContainer_left" id="radarContainer"></div>
+
     <!-- transparent footer-->
-    <div data-role="footer" class="ui-bar" data-theme="f" data-position="fixed" style="text-align:center;">
+    <div data-role="footer" class="ui-bar" data-theme="f" data-position="fixed"
+         style="text-align:center;">
 
         <!-- small status-button -->
-        <a style="text-align:right;" id="popupInfoButton" href="#popupInfo" data-rel="popup" data-role="button"
-           class="ui-icon-alt" data-inline="true" data-transition="pop" data-icon="alert" data-theme="e"
+        <a style="text-align:right;" id="popupInfoButton" href="#popupInfo" data-rel="popup"
+           data-role="button"
+           class="ui-icon-alt" data-inline="true" data-transition="pop" data-icon="alert"
+           data-theme="e"
            data-iconpos="notext">Log</a> </p>
 
         <!-- popup displayed when button clicked -->
-        <div data-role="popup" id="popupInfo" class="ui-content" data-theme="e" style="max-width:350px;">
+        <div data-role="popup" id="popupInfo" class="ui-content" data-theme="e"
+             style="max-width:350px;">
             <p style="text-align:right;" id="status-message">Trying to find out where you are</p>
         </div>
     </div>
     <!-- PANELS, ONLY VISIBLE ON DEMAND -->
     <!-- panel containing POI detail information -->
-    <div data-role="panel" id="panel-poidetail" data-position="right" data-display="overlay"
-         style="background-color:#F0F0F0;" data-theme="c">
+    <a href="#panel-poidetail" data-rel="panel" class="ui-btn ui-btn-inline ui-corner-all">Show
+        Popup</a>
+    <div data-role="panel" id="panel-poidetail" data-position="right" data-display="overlay" data-swipe-close="true"
+         data-theme="c">
 
         <!-- header with "close" button -->
-        <div data-role="header" data-theme="c">
-            <h1>Details</h1>
-            <a href="#header" data-rel="close">Close</a>
+        <div data-role="header" data-theme="c" id="panel-header">
+            <a href="#header" data-rel="close">닫기</a>
         </div>
 
         <!-- content of POI detail page, you may also add thumbnails etc. here if you like -->
         <div data-role="content">
-
             <!-- title -->
-            <h3 id="poi-detail-title"></h3>
+            <h3 id="poi-detail-title">ㅁㅁㅁㅁㅁㅁ</h3>
 
             <!-- description -->
-            <h4 id="poi-detail-description"></h4>
+            <h4 id="poi-detail-description">assa dadasdad asadasd adas</h4>
 
             <!-- distance -->
-            <h4>Distance: <a id="poi-detail-distance"></a></h4>
+            <h4>Distance: <a id="poi-detail-distance">000m</a></h4>
 
             <!-- more button-->
-            <a href="javascript: World.onPoiDetailMoreButtonClicked();" data-role="button" data-icon="arrow-r"
-               data-iconpos="right" data-inline="true">More</a>
+            <a href="javascript: World.onPoiDetailMoreButtonClicked();" data-role="button"
+               data-icon="arrow-r"
+               data-iconpos="right" data-inline="true" id="detail_button">층별학과위치</a>
         </div>
     </div>
+
+    <a href="#myPopup" data-rel="popup" class="ui-btn ui-btn-inline ui-corner-all">Show
+        Popup</a>
+
+    <div data-role="popup" id="myPopup" class="ui-content">
+        <a href="#" data-rel="close"
+           class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-left">닫기</a>
+
+        <h3>건물층별 학과 위치</h3>
+        <div id="get_html_source">
+
+        </div>
+    </div>
+    <a href="javascript: World.onPoiDetailMoreButtonClicked();">testing</a>
 </div>
 
 </body>

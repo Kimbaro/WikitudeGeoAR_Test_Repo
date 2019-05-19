@@ -25,6 +25,7 @@ import com.wikitude.architect.ArchitectView;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.Console;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -82,6 +83,7 @@ public class GeoArActivity extends AppCompatActivity implements LocationListener
             if (location.hasAltitude() && location.hasAccuracy() && location.getAccuracy() < 7) {
                 architectView.setLocation(location.getLatitude(), location.getLongitude(), location.getAltitude(), location.getAccuracy());
             } else {
+                Toast.makeText(getApplicationContext(), "위치정보 로딩중", Toast.LENGTH_SHORT).show();
                 architectView.setLocation(location.getLatitude(), location.getLongitude(), location.hasAccuracy() ? location.getAccuracy() : 1000);
             }
 //            Toast.makeText(getApplicationContext(), location.getLatitude() + "||" + location.getLongitude() + "||" + location.getAltitude(), Toast.LENGTH_SHORT).show();
